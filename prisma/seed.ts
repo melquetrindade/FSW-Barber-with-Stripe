@@ -146,6 +146,8 @@ async function seedDatabase() {
     await prisma.$disconnect();
   } catch (error) {
     console.error("Erro ao criar as barbearias:", error);
+  } finally {
+    await prisma.$disconnect();
   }
 }
 

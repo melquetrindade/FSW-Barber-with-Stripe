@@ -91,8 +91,53 @@ model Booking {
   userId    String
   serviceId String
   date      DateTime
+  serviceName String
+  servicePrice Decimal @db.Decimal(10, 2)
+  status   BookingStatus     @default(PENDING_PAYMENT)
   createdAt DateTime          @default(now())
   updatedAt DateTime          @updatedAt
   service   BarbershopService @relation(fields: [serviceId], references: [id])
   user      User              @relation(fields: [userId], references: [id])
+
+  payment Payment?
+}
+
+model Payment {
+  id String @id @default(uuid())
+
+  bookingId String @unique
+  booking Booking @relation(fields: [bookingId], references: [id])
+
+  stripeCheckoutSessionId String? @unique
+  stripePaymentIntentId   String? @unique
+
+  amount Decimal @db.Decimal(10,2)
+
+  status PaymentStatus @default(PENDING)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  paymentMethod PaymentMethod?
+}
+
+enum PaymentStatus {
+  PENDING
+  PAID
+  FAILED
+  CANCELED
+  REFUNDED
+}
+
+enum BookingStatus {
+  PENDING_PAYMENT
+  CONFIRMED
+  COMPLETED
+  CANCELED
+}
+
+enum PaymentMethod {
+  CARD
+  PIX
+  BOLETO
 }

@@ -57,7 +57,8 @@ export const ModelName = {
   VerificationToken: 'VerificationToken',
   Barbershop: 'Barbershop',
   BarbershopService: 'BarbershopService',
-  Booking: 'Booking'
+  Booking: 'Booking',
+  Payment: 'Payment'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -159,11 +160,29 @@ export const BookingScalarFieldEnum = {
   userId: 'userId',
   serviceId: 'serviceId',
   date: 'date',
+  serviceName: 'serviceName',
+  servicePrice: 'servicePrice',
+  status: 'status',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
 
 export type BookingScalarFieldEnum = (typeof BookingScalarFieldEnum)[keyof typeof BookingScalarFieldEnum]
+
+
+export const PaymentScalarFieldEnum = {
+  id: 'id',
+  bookingId: 'bookingId',
+  stripeCheckoutSessionId: 'stripeCheckoutSessionId',
+  stripePaymentIntentId: 'stripePaymentIntentId',
+  amount: 'amount',
+  status: 'status',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  paymentMethod: 'paymentMethod'
+} as const
+
+export type PaymentScalarFieldEnum = (typeof PaymentScalarFieldEnum)[keyof typeof PaymentScalarFieldEnum]
 
 
 export const SortOrder = {
