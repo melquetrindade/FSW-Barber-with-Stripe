@@ -1,0 +1,112 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@import "tw-animate-css";
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+@layer base {
+  .theme {
+    --font-heading: var(--font-sans);
+    --font-sans: var(--font-sans);
+  }
+  .light {
+    --background: oklch(0.98 0.005 260);
+
+    --foreground: oklch(0.22 0.01 260);
+
+    --card: oklch(1 0 0);
+
+    --card-foreground: oklch(0.22 0.01 260);
+
+    --popover: oklch(1 0 0);
+
+    --popover-foreground: oklch(0.22 0.01 260);
+
+    --primary: oklch(0.62 0.2 280);
+
+    --primary-foreground: oklch(1 0 0);
+
+    --secondary: oklch(0.94 0.01 260);
+
+    --secondary-foreground: oklch(0.22 0.01 260);
+
+    --muted: oklch(0.94 0.01 260);
+
+    --muted-foreground: oklch(0.5 0.01 260);
+
+    --accent: oklch(0.92 0.03 280);
+
+    --accent-foreground: oklch(0.22 0.01 260);
+
+    --destructive: oklch(0.64 0.24 25);
+
+    --destructive-foreground: oklch(1 0 0);
+
+    --border: oklch(0.88 0.01 260);
+
+    --input: oklch(0.88 0.01 260);
+
+    --ring: oklch(0.62 0.2 280);
+
+    --radius: 0.5rem;
+  }
+  .dark {
+
+    --background: oklch(0.17 0.01 260);
+
+    --foreground: oklch(0.98 0 0);
+
+    --card: oklch(0.21 0.01 260);
+
+    --card-foreground: oklch(0.98 0 0);
+
+    --popover: oklch(0.21 0.01 260);
+
+    --popover-foreground: oklch(0.98 0 0);
+
+    --primary: oklch(0.7 0.2 280);
+
+    --primary-foreground: oklch(1 0 0);
+
+    --secondary: oklch(0.28 0.01 260);
+
+    --secondary-foreground: oklch(0.98 0 0);
+
+    --muted: oklch(0.28 0.01 260);
+
+    --muted-foreground: oklch(0.72 0 0);
+
+    --accent: oklch(0.28 0.01 260);
+
+    --accent-foreground: oklch(0.98 0 0);
+
+    --destructive: oklch(0.64 0.24 25);
+
+    --destructive-foreground: oklch(0.98 0 0);
+
+    --border: oklch(0.28 0.01 260);
+
+    --input: oklch(0.28 0.01 260);
+
+    --ring: oklch(0.84 0.02 260);
+
+    --radius: 0.5rem;
+
+  }
+  * {
+    @apply border-border antialiased;
+  }
+  body {
+    @apply bg-background text-foreground h-full;
+  }
+  html {
+    @apply font-sans h-full;
+  }
+}
+
+/* h-full no body e html são necessários para criar o efeito mencionado no layout */
