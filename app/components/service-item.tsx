@@ -13,9 +13,9 @@ import { toast } from 'sonner';
 import { getBookings } from '../_actions/get-booking';
 import { Dialog, DialogContent } from './ui/dialog';
 import SignInDialog from './sign-in-dialog';
-import { useRouter } from 'next/navigation';
 import { getTimeList } from '../_data/get-time-list';
 import BookingSheetContent from './booking-sheet-content';
+import { createStripeCheckout } from '../_actions/create-stripe-checkout';
 
 interface ServiceItemProps {
     service: BarbershopService
@@ -29,7 +29,6 @@ const ServiceItem = ({service, barbershop} :  ServiceItemProps) => {
     const {data} = useSession() // Esta função trás dados do usuário logado
     const [dayBookings, setDayBookings] = useState<Booking[]>([])
     const [bookingSheetIsOpen, setBookingSheetIsOpen] = useState(false)
-    const router = useRouter()
 
     useEffect(() => {
         const fetch = async () => {
@@ -74,17 +73,24 @@ const ServiceItem = ({service, barbershop} :  ServiceItemProps) => {
             if(!selectedDate){
                 return
             }
+            console.log(`Dia da reserva: ${selectedDate} - Id do serviço: ${service.id}`)
+            // ESTA FUNÇÃO SERÁ ALTERADA!!!
             await createBooking({
                 serviceId: service.id,
                 date: selectedDate,
             })
-            handleBookingSheetOpenChange()
-            toast.success("Reserva criada com sucesso!", {
-                action: {
-                    label: "Ver agendamentos",
-                    onClick: () => router.push("/bookings")
-                }
-            })
+
+            const { sessionUrl } = await createStripeCheckout({service})
+            window.location.href = sessionUrl
+
+            // COMENTADOS POR ENQUANTO PARA TESTAR O STRIPE
+            //handleBookingSheetOpenChange()
+            // toast.success("Reserva criada com sucesso!", {
+            //     action: {
+            //         label: "Ver agendamentos",
+            //         onClick: () => router.push("/bookings")
+            //     }
+            // })
         } catch (error) {
             console.log(error)
             toast.error("Error ao criar reserva!")
