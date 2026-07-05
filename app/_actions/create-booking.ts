@@ -24,7 +24,7 @@ export const createBooking = async (params: CreateBookingParams) => {
         throw new Error('Serviço não encontrado')
     }
 
-    await db.booking.create({
+    const booking = await db.booking.create({
         data: {
             ...params,
             userId: user.user.id,
@@ -35,4 +35,6 @@ export const createBooking = async (params: CreateBookingParams) => {
 
     revalidatePath(`/barbershops/${service.barbershopId}`)
     revalidatePath('/bookings')
+
+    return booking
 }

@@ -75,12 +75,12 @@ const ServiceItem = ({service, barbershop} :  ServiceItemProps) => {
             }
             console.log(`Dia da reserva: ${selectedDate} - Id do serviço: ${service.id}`)
             // ESTA FUNÇÃO SERÁ ALTERADA!!!
-            await createBooking({
+            const booking = await createBooking({
                 serviceId: service.id,
                 date: selectedDate,
             })
 
-            const { sessionUrl } = await createStripeCheckout({service})
+            const { sessionUrl } = await createStripeCheckout({service, bookingId: booking.id})
             window.location.href = sessionUrl
 
             // COMENTADOS POR ENQUANTO PARA TESTAR O STRIPE

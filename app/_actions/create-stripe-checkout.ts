@@ -3,30 +3,38 @@
 import { BarbershopService } from "@/prisma/generated/browser"
 import { headers } from "next/headers"
 import Stripe from "stripe"
+import { db } from "../_lib/prisma"
 
 interface CreateStripeCheckoutProps {
   service: BarbershopService
+  bookingId: string
 }
 
 export const createStripeCheckout = async ({
   service,
+  bookingId,
 }: CreateStripeCheckoutProps) => {
   const reqHeaders = headers()
-  const origin =
-    reqHeaders.get("origin") ??
-    process.env.NEXT_PUBLIC_APP_URL ??
-    "http://localhost:3000"
-
+  const origin = reqHeaders.get("origin") as string
   const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
     apiVersion: "2026-06-24.dahlia",
   })
 
-  const unitAmount = Math.round(Number(service.price.toString()) * 100)
+  const priceService = await db.barbershopService.findUnique({
+    where: {
+      id: service.id,
+    },
+  })
+
+  const unitAmount = Math.round(Number(priceService?.price.toString()) * 100)
 
   const session = await stripe.checkout.sessions.create({
     mode: "payment",
     success_url: `${origin}/bookings`,
-    cancel_url: origin,
+    cancel_url: `${origin}/bookings`,
+    metadata: {
+      bookingId: bookingId,
+    },
     payment_method_types: ["card"],
     line_items: [
       {

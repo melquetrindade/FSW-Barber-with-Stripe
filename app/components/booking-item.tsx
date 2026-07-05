@@ -52,7 +52,7 @@ const BookingItem = ({ booking }: BookingItemProps) => {
   const {
     service: { barbershop },
   } = booking
-
+  const bookingStatus = booking.status
   const handleCancelBooking = async () => {
     try {
       await deleteBooking(booking.id)
@@ -68,6 +68,19 @@ const BookingItem = ({ booking }: BookingItemProps) => {
     setIsAlertDialogOpen(isOpen)
   }
 
+  // Depois ajustar essa função
+  const statusBooking = () => {
+    if(isConfirmed && bookingStatus === 'CONFIRMED'){
+      return "Confirmado"
+    } else if(isConfirmed && bookingStatus === 'CANCELED'){
+      return "Cancelado"
+    } else if(isConfirmed && bookingStatus === 'PENDING_PAYMENT'){
+      return "Pagamento pendente"
+    } else if(!isConfirmed && bookingStatus === 'CONFIRMED'){
+      return "Finalizado"
+    } return "Finalizado"
+  }
+
   return (
     <Sheet open={isAlertDialogOpen} onOpenChange={handleSheetOpenChange}>
       <SheetTrigger className="w-full min-w-[90%]">
@@ -79,7 +92,7 @@ const BookingItem = ({ booking }: BookingItemProps) => {
                 variant={isConfirmed ? "default" : "secondary"}
                 className="w-fit rounded-xl"
               >
-                {isConfirmed ? "Confirmado" : "Finalizado"}
+                {statusBooking()}
               </Badge>
               <h3 className="font-bold">{booking.service.name}</h3>
 
